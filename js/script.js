@@ -10,6 +10,8 @@ const simulador = () => {
       (2) Agregar producto\n
       (3) Eliminar producto\n
       (4) Modificar producto\n
+      (5) Agregar productos al carrito\n
+      (6) Mostrar carrito\n
       (0) Salir`
     );
 
@@ -35,12 +37,16 @@ const simulador = () => {
         mensaje = modificarProducto(productoAModificar);
         alert(mensaje);
         break;
-      /* 
-      ==== TODO ====
       case 5:
-        console.log("carrito");
+        let nombreProducto = prompt("Ingrese el nombre del producto que desee comprar.");
+        let cantidadProducto = prompt("Ingrese cuantas unidades desea comprar.");
+        mensaje = agregarCarrito(nombreProducto, cantidadProducto);
+        alert(mensaje);
+        break
+      case 6:
+        mensaje = mostrarCarrito();
+        alert(mensaje);
         break;
-      */
       case 0:
       case null:
         continuar = false;
@@ -59,7 +65,16 @@ class Producto {
   }
 }
 
+class itemCarrito {
+  constructor(nombre, cantidad, precio) {
+    this.nombre = nombre.toLowerCase();
+    this.cantidad = parseInt(cantidad);
+    this.precio = parseInt(precio);
+  }
+}
+
 const productos = [];
+const carrito = [];
 
 const agregarProductos = () => {
   let mensaje = "No se pudo agregar el producto.";
@@ -126,6 +141,41 @@ const modificarProducto = (productoAModificar) => {
       mensaje = `Producto "${productoAModificar}" fue actualizado.`
     }
   }
+  return mensaje;
+}
+
+const mostrarCarrito = () => {
+  let mensaje = `Carrito: \n`;
+  let total = 0;
+
+  if (carrito.length > 0) {
+    for (let item of carrito) {
+      let subtotal = item.precio * item.cantidad;
+      total += subtotal;
+      mensaje += `•${item.nombre} x $${item.cantidad} = ${subtotal} \n`;
+    }
+    mensaje += `----------\nTotal = ${total}`;
+  }
+  else {
+    mensaje = `El Carrito está vacío.`;
+  }
+
+  return mensaje;
+}
+
+const agregarCarrito = (nombreProducto, cantidadProducto) => {
+  let mensaje = "";
+  let item = null;
+  for (let i = 0; i < productos.length; i++) {
+    if (productos[i].nombre === nombreProducto) {
+      item = new itemCarrito(productos[i].nombre, cantidadProducto, productos[i].precio);
+      carrito.push(item);
+      mensaje = "Producto(s) agregado(s) correctamente.";
+      break;
+    }
+  }
+  if (item == null)
+    mensaje = "El producto ingresado no existe en el catálogo.";
   return mensaje;
 }
 
