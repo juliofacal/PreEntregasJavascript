@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "nombre": "Disco Duro para Laptop",
+        "precio": 1000,
+        "descripcion": "Western Digital Scorpio Blue; 500GB; SATA.",
+        "img": "https://prd.place/200?id=1",
+        "oferta": true
+    },
+    {
+        "id": 2,
+        "nombre": "Placa de video",
+        "precio": 2000,
+        "descripcion": "Placa de video Sapphire Radeon R9 290X",
+        "img": "https://prd.place/200?id=2",
+        "oferta": false
+    },
+    {
+        "id": 3,
+        "nombre": "Smartphone",
+        "precio": 3000,
+        "descripcion": "ZenFone 6",
+        "img": "https://prd.place/200?id=3",
+        "oferta": true
+    },
+    {
+        "id": 4,
+        "nombre": "Disco Zip",
+        "precio": 4000,
+        "descripcion": "Fujifilm IBM",
+        "img": "https://prd.place/200?id=4",
+        "oferta": false
+    },
+    {
+        "id": 5,
+        "nombre": "Monitor",
+        "precio": 5000,
+        "descripcion": "Monitor 17 Lcd Vga DELL",
+        "img": "https://prd.place/200?id=5",
+        "oferta": true
+    },
+    {
+        "id": 6,
+        "nombre": "Cable Ethernet",
+        "precio": 6000,
+        "descripcion": "Cable Ethernet",
+        "img": "https://prd.place/200?id=6",
+        "oferta": false
+    },
+    {
+        "id": 7,
+        "nombre": "Monitor",
+        "precio": 7000,
+        "descripcion": "EIZO Foris FG2421 VGA",
+        "img": "https://prd.place/200?id=7",
+        "oferta": true
+    }
+]
