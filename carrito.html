@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -23,13 +24,20 @@
         <section class="carrito">
             <h2>Carrito</h2>
 
-            <div id="contenedor-carrito">
+            <div id="contenedorCarrito">
                 <p>El carrito está vacío</p>
             </div>
-            <p id="total-carrito">Total: $0</p>
+            <p id="totalCarrito">Total: $0</p>
+            <hr>
+            <div>
+                <h3>Filtros:</h3>
+                <button type="button" id="botonVaciar" onclick="vaciarCarrito();">Vaciar carrito</button>
+                <button type="button" id="botonComprar" onclick="completarCompra();">Completar compra</button>
+            </div>
         </section>
     </main>
-    <script src="js/script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="js/carrito.js"></script>
 </body>
 
 </html>

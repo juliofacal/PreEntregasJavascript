@@ -1,4 +1,42 @@
-const productos = JSON.parse(localStorage.getItem("catalogo")) || [];
+class Producto {
+    constructor(id, nombre, precio, descripcion, img) {
+        this.id = id;
+        this.nombre = String(nombre);
+        this.precio = parseInt(precio);
+        this.descripcion = String(descripcion);
+        this.img = String(img);
+        this.oferta = false;
+    }
+}
+
+const catalogo = JSON.parse(localStorage.getItem("catalogo")) || [];
+const contenedorABMCatalogo = document.getElementById("contenedorABMCatalogo") || [];
+const botonOfertas = document.getElementById("ofertas");
+const botonHabilitados = document.getElementById("habilitados");
+const botonSuspendidos = document.getElementById("suspendidos");
+const botonTodos = document.getElementById("todos");
+const barraBusqueda = document.getElementById("busqueda");
+
+const renderizarABMProductos = (array) => {
+    contenedorABMCatalogo.innerHTML = "";
+    
+    array.forEach((producto) => {
+        let div = document.createElement("div");
+
+        div.classList.add("producto");
+        div.innerHTML = `
+        <p>Id: ${producto.id}</p>
+        <h3>${producto.nombre}</h3>
+        <p>$${producto.precio}</p>
+        <img src="${producto.img}" alt="${producto.descripcion}">
+        <button type=button id="suspenderProducto(${producto.id})" ${(producto.habilitado)? "" : "disabled"}>Suspender</button>
+        <button type=button id="reanudarProducto(${producto.id})" ${(!producto.habilitado)? "" : "disabled"}>Reanudar</button>
+        <button type=button id="eliminarProducto(${producto.id})">Eliminar</button>
+        `;
+
+        contenedorABMCatalogo.appendChild(div);
+    });
+}
 
 const agregarProductos = () => {
     let mensaje = "No se pudo agregar el producto.";
@@ -52,3 +90,41 @@ const modificarProducto = (productoAModificar) => {
     }
     return mensaje;
 }
+
+botonHabilitados.addEventListener("click", () => {
+    let productosOfertas = catalogo.filter((prd) => prd.habilitado)
+
+    renderizarABMProductos(productosOfertas)
+});
+
+botonSuspendidos.addEventListener("click", () => {
+    let productosOfertas = catalogo.filter((prd) => !prd.habilitado)
+
+    renderizarABMProductos(productosOfertas)
+});
+
+botonOfertas.addEventListener("click", () => {
+    let productosOfertas = catalogo.filter((prd) => prd.oferta)
+
+    renderizarABMProductos(productosOfertas)
+});
+
+botonTodos.addEventListener("click", () => {
+    renderizarABMProductos(catalogo)
+});
+
+barraBusqueda.addEventListener("input", () => {
+    let textoBusqueda = barraBusqueda.value.toLowerCase()
+    let productosFiltrados = catalogo.filter(prd => prd.nombre.toLowerCase().includes(textoBusqueda))
+
+    renderizarABMProductos(productosFiltrados)
+});
+
+window.addEventListener("DOMContentLoaded", (e) => {
+    if (catalogo === undefined || catalogo.length == 0) {
+        getCatalogo();
+    }
+    else {
+        renderizarABMProductos(catalogo);
+    }
+});

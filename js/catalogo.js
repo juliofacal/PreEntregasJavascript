@@ -1,21 +1,5 @@
-class Producto {
-    constructor(nombre, precio, descripcion) {
-        this.nombre = nombre.toLowerCase();
-        this.precio = parseInt(precio);
-        this.descripcion = descripcion.toLowerCase();
-    }
-}
-
-class itemCarrito {
-    constructor(nombre, cantidad, precio) {
-        this.nombre = nombre.toLowerCase();
-        this.cantidad = parseInt(cantidad);
-        this.precio = parseInt(precio);
-    }
-}
-
 const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-let catalogo = JSON.parse(localStorage.getItem("catalogo")) || [];
+const catalogo = JSON.parse(localStorage.getItem("catalogo")) || [];
 const contenedorCatalogo = document.getElementById("contenedorCatalogo") || [];
 const botonOfertas = document.getElementById("ofertas");
 const botonTodos = document.getElementById("todos");
@@ -28,8 +12,11 @@ const getCatalogo = async () => {
         if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
         }
-
-        catalogo = await response.json();
+        const productos = await response.json();
+        productos.forEach((producto) => {
+            catalogo.push(producto);
+        })
+        guardarCatalogo();
         renderizarProductos(catalogo);
 
     } catch (error) {
@@ -37,44 +24,59 @@ const getCatalogo = async () => {
     }
 }
 
+const guardarCatalogo = () => {
+    localStorage.setItem("catalogo", JSON.stringify(catalogo))
+}
+
 const renderizarProductos = (array) => {
     contenedorCatalogo.innerHTML = "";
     
     array.forEach((producto) => {
-        let div = document.createElement("div");
+        if (producto.habilitado) {
+            let div = document.createElement("div");
 
-        div.classList.add("producto");
-        div.innerHTML = `
-        <h3>${producto.nombre}</h3>
-        <p>$${producto.precio}</p>
-        <img src="${producto.img}" alt="${producto.descripcion}">
-        <button id="agregar${producto.id}">Comprar</button>
-        `;
-
-        contenedorCatalogo.appendChild(div);
-
-        let boton = document.getElementById(`agregar${producto.id}`);
-        boton.addEventListener("click", () => {
-            agregarCarrito(producto.id);
-        });
-    });
+            div.classList.add("producto");
+            div.innerHTML = `
+            <h3>${producto.nombre}</h3>
+            <p>$${producto.precio}</p>
+            <img src="${producto.img}" alt="${producto.descripcion}">
+            <button id="agregar${producto.id}">Comprar</button>
+            `;
     
-    requestAnimationFrame(() => {});
+            contenedorCatalogo.appendChild(div);
+    
+            let boton = document.getElementById(`agregar${producto.id}`);
+            boton.addEventListener("click", () => {
+                agregarCarrito(producto.id);
+            });
+        }
+    });
 }
 
 
 const agregarCarrito = (id) => {
-    let producto = stockProductos.find((prod) => prod.id === id)
+    let producto = catalogo.find((prod) => prod.id === id);
 
     if (carrito.some((prd) => prd.id === id)) {
-        const index = carrito.findIndex((prd) => prd.id === id)
-        carrito[index].cantidad++
+        const index = carrito.findIndex((prd) => prd.id === id);
+        carrito[index].cantidad++;
     } else {
-        producto.cantidad = 1
-        carrito.push(producto)
+        producto.cantidad = 1;
+        carrito.push(producto);
     }
-
-    guardarCarrito()
+    guardarCarrito();
+    Toastify({
+        text: "Producto agregado",
+        duration: 5000,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
 }
 
 const guardarCarrito = () => {

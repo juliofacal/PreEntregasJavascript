@@ -5,6 +5,7 @@
         "precio": 1000,
         "descripcion": "Western Digital Scorpio Blue; 500GB; SATA.",
         "img": "https://prd.place/200?id=1",
+        "habilitado": true,
         "oferta": true
     },
     {
@@ -13,6 +14,7 @@
         "precio": 2000,
         "descripcion": "Placa de video Sapphire Radeon R9 290X",
         "img": "https://prd.place/200?id=2",
+        "habilitado": true,
         "oferta": false
     },
     {
@@ -21,6 +23,7 @@
         "precio": 3000,
         "descripcion": "ZenFone 6",
         "img": "https://prd.place/200?id=3",
+        "habilitado": true,
         "oferta": true
     },
     {
@@ -29,6 +32,7 @@
         "precio": 4000,
         "descripcion": "Fujifilm IBM",
         "img": "https://prd.place/200?id=4",
+        "habilitado": false,
         "oferta": false
     },
     {
@@ -37,6 +41,7 @@
         "precio": 5000,
         "descripcion": "Monitor 17 Lcd Vga DELL",
         "img": "https://prd.place/200?id=5",
+        "habilitado": true,
         "oferta": true
     },
     {
@@ -45,6 +50,7 @@
         "precio": 6000,
         "descripcion": "Cable Ethernet",
         "img": "https://prd.place/200?id=6",
+        "habilitado": true,
         "oferta": false
     },
     {
@@ -53,6 +59,7 @@
         "precio": 7000,
         "descripcion": "EIZO Foris FG2421 VGA",
         "img": "https://prd.place/200?id=7",
+        "habilitado": true,
         "oferta": true
     }
 ]

@@ -1,13 +1,13 @@
-const contenedorCarrito = document.getElementById("contenedor-carrito")
-const totalCarrito = document.getElementById("total-carrito")
+const contenedorCarrito = document.getElementById("contenedorCarrito")
+const totalCarrito = document.getElementById("totalCarrito")
 const carrito = JSON.parse(localStorage.getItem("carrito")) || []
 
 const actualizarCarrito = () => {
 
-    contenedorCarrito.innerHTML = ""
+    contenedorCarrito.innerHTML = "";
 
     carrito.forEach((elm) => {
-        const div = document.createElement("div");
+        let div = document.createElement("div");
         div.classList.add("producto");
 
         div.innerHTML = `
@@ -23,43 +23,89 @@ const actualizarCarrito = () => {
 
         contenedorCarrito.append(div);
 
-        const botonBorrar = document.getElementById(`borrar${elm.id}`);
+        let botonBorrar = document.getElementById(`borrar${elm.id}`);
         botonBorrar.addEventListener("click", () => {
             borrarDelCarrito(elm.id);
             actualizarCarrito();
+            Toastify({
+                text: "Producto borrado",
+                duration: 5000,
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function(){} // Callback after click
+            });
         });
 
-        const botonIncrementar = document.getElementById(`incrementar${elm.id}`)
+        let botonIncrementar = document.getElementById(`incrementar${elm.id}`)
         botonIncrementar.addEventListener("click", () => {
-            elm.cantidad++
-            actualizarCarrito()
-            guardarCarrito()
-        })
+            elm.cantidad++;
+            guardarCarrito();
+            actualizarCarrito();
+        });
 
         const botonDecrementar = document.getElementById(`decrementar${elm.id}`)
         botonDecrementar.addEventListener("click", () => {
             if (elm.cantidad > 1) {
-                elm.cantidad--
-                guardarCarrito()
-                actualizarCarrito()
+                elm.cantidad--;
+                guardarCarrito();
+                actualizarCarrito();
             }
-        })
+        });
     });
 
-
-
-    totalCarrito.textContent = `Total: $${carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0)}`
-
+    totalCarrito.textContent = `Total: $${carrito.reduce((accumulator, prod) => accumulator + (prod.precio * prod.cantidad), 0)}`;
 }
 
 const borrarDelCarrito = (id) => {
-    const index = carrito.findIndex((prd) => prd.id === id)
-    carrito.splice(index, 1)
-    guardarCarrito()
+    let index = carrito.findIndex((prd) => prd.id === id)
+    carrito.splice(index, 1);
+    guardarCarrito();
+}
+
+const vaciarCarrito = () => {
+    carrito.length = 0;
+    guardarCarrito();
+    actualizarCarrito();
+    Toastify({
+        text: "Carrito vaciado",
+        duration: 5000,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
+}
+
+const completarCompra = () => {
+    let total = carrito.reduce((accumulator, prod) => accumulator + (prod.precio * prod.cantidad), 0);
+    carrito.length = 0;
+    guardarCarrito();
+    actualizarCarrito();
+    Toastify({
+        text: "Compra completada. Se debitaron $" + total,
+        duration: 5000,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
 }
 
 const guardarCarrito = () => {
-    localStorage.setItem("carrito", JSON.stringify(carrito))
+    localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-actualizarCarrito()
+actualizarCarrito();

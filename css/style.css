@@ -48,18 +48,13 @@
     padding: 1rem;
   }
   
-  #contenedor-productos {
+  #contenedorCarrito,
+  #contenedorCatalogo,
+  #contenedorABMCatalogo {
     padding: 1rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  #contenedorCatalogo {
-    padding: 1rem;
-    display: flex;
-    flex-direction: row;
     gap: 16px;
   }
   
@@ -68,7 +63,6 @@
     border-radius: 10px;
     width: 250px;
     padding: 1rem;
-  
     display: flex;
     flex-direction: column;
     gap: 16px;
