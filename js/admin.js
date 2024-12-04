@@ -48,31 +48,11 @@ const renderizarABMProductos = (array) => {
     });
 }
 
-const agregarProductos = (id, nombre, precio, descripcion, img) => {
-    let mensaje = "Confirme la creación y agregado del producto al catálogo.";
-    if (confirm(mensaje)) {
-        const producto = new Producto(id, nombre, precio, descripcion, img);
-        catalogo.push(producto);
-        Toastify({
-            text: "Producto agregado.",
-            duration: 5000,
-            close: true,
-            gravity: "bottom", // `top` or `bottom`
-            position: "center", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-              background: "linear-gradient(to right, #00b09b, #96c93d)",
-            },
-            onClick: function(){} // Callback after click
-        }).showToast();
-    }
-}
-
 const borrarProducto = (id) => {
     let mensaje = "Confirme el borrado del producto del catálogo."
 
     if (confirm(mensaje)) {
-        let index = catalogo.map(element => element.id).indexOf(id);
+        let index = catalogo.map(producto => producto.id).indexOf(id);
         if (index !== -1) {
             catalogo.splice(index, 1);
             guardarCatalogo();
@@ -93,33 +73,67 @@ const borrarProducto = (id) => {
     } 
 }
 
-const modificarProducto = (productoAModificar) => {
-    let mensaje = "No se encontró el producto.";
-    for (let i = 0; i < catalogo.length; i++) {
-        if (catalogo[i].nombre === productoAModificar) {
-            catalogo[i].precio = prompt("Ingrese el nuevo precio del producto.");
-            catalogo[i].descripcion = prompt("Ingrese la nueva descripción del producto.");
-            mensaje = `Producto "${productoAModificar}" fue actualizado.`
+const suspenderProducto = (id) => {
+    catalogo.forEach(producto => {
+        if (producto.id === id) {
+            producto.habilitado = false;
+            guardarCatalogo();
+            renderizarABMProductos(catalogo);
+            Toastify({
+                text: "Producto suspendido.",
+                duration: 5000,
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function(){} // Callback after click
+            }).showToast();
         }
-    }
-    return mensaje;
+    });
 }
+
+const reanudarProducto = (id) => {
+    catalogo.forEach(producto => {
+        if (producto.id === id) {
+            producto.habilitado = true;
+            guardarCatalogo();
+            renderizarABMProductos(catalogo);
+            Toastify({
+                text: "Producto reanudado.",
+                duration: 5000,
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function(){} // Callback after click
+            }).showToast();
+        }
+    });
+}
+
+// Botones de filtrado
 
 botonHabilitados.addEventListener("click", () => {
     let productosOfertas = catalogo.filter((prd) => prd.habilitado)
-
+    
     renderizarABMProductos(productosOfertas)
 });
 
 botonSuspendidos.addEventListener("click", () => {
     let productosOfertas = catalogo.filter((prd) => !prd.habilitado)
-
+    
     renderizarABMProductos(productosOfertas)
 });
 
 botonOfertas.addEventListener("click", () => {
     let productosOfertas = catalogo.filter((prd) => prd.oferta)
-
+    
     renderizarABMProductos(productosOfertas)
 });
 
@@ -130,10 +144,11 @@ botonTodos.addEventListener("click", () => {
 barraBusqueda.addEventListener("input", () => {
     let textoBusqueda = barraBusqueda.value.toLowerCase()
     let productosFiltrados = catalogo.filter(prd => prd.nombre.toLowerCase().includes(textoBusqueda))
-
+    
     renderizarABMProductos(productosFiltrados)
 });
 
+//Funciones generales
 const guardarCatalogo = () => {
     localStorage.setItem("catalogo", JSON.stringify(catalogo));
 };
@@ -146,3 +161,41 @@ window.addEventListener("DOMContentLoaded", (e) => {
         renderizarABMProductos(catalogo);
     }
 });
+
+
+
+/*
+SIN IMPLEMENTAR
+
+const agregarProductos = (id, nombre, precio, descripcion, img) => {
+    let mensaje = "Confirme la creación y agregado del producto al catálogo.";
+    if (confirm(mensaje)) {
+        const producto = new Producto(id, nombre, precio, descripcion, img);
+        catalogo.push(producto);
+        Toastify({
+            text: "Producto agregado.",
+            duration: 5000,
+            close: true,
+            gravity: "bottom", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+            onClick: function(){} // Callback after click
+        }).showToast();
+    }
+}
+
+const modificarProducto = (productoAModificar) => {
+    let mensaje = "No se encontró el producto.";
+    for (let i = 0; i < catalogo.length; i++) {
+        if (catalogo[i].nombre === productoAModificar) {
+            catalogo[i].precio = prompt("Ingrese el nuevo precio del producto.");
+            catalogo[i].descripcion = prompt("Ingrese la nueva descripción del producto.");
+            mensaje = `Producto "${productoAModificar}" fue actualizado.`
+        }
+    }
+    return mensaje;
+}
+*/
